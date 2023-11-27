@@ -464,6 +464,7 @@ header {
 .content-heading h3 {
   font-weight: normal;
   font-size: 14px;
+  margin-top: -4px;
 }
 
 .content-heading button {
@@ -653,7 +654,7 @@ header {
     align-items: flex-start;
     flex: 1;
     height: 100%;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   .select-plan > div .selectBtn {
