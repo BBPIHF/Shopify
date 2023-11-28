@@ -32,7 +32,6 @@
   text-decoration: none;
   transition: all 200ms ease-in;
   list-style: none;
-  /* overflow-y: hidden; */
 }
 
 button {
@@ -44,7 +43,7 @@ body {
   max-width: 1440px;
   margin: 0px auto;
   position: relative;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 /* header starts here */
 
@@ -55,6 +54,13 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
+}
+
+#notification-Status,
+#sidebar-Status,
+#setup-guide-text {
+  position: absolute;
+  z-index: -400;
 }
 
 .logo a:focus-visible {
@@ -171,6 +177,7 @@ header {
   right: 20px;
   padding: 7px;
   display: none;
+  z-index: 10;
 }
 
 .sidebar.active {
@@ -241,7 +248,7 @@ header {
   color: #303030;
   font-weight: 500;
 }
-.sidebar ul a:focus {
+.sidebar ul a:focus-visible {
   outline: 2px solid var(--focused);
   outline-offset: 1px;
 }
@@ -275,6 +282,7 @@ header {
   flex-direction: column;
   gap: 16px;
   display: none;
+  z-index: 10;
 }
 
 .alert-modal.active {
@@ -372,7 +380,7 @@ header {
 
 /* remove select plan */
 .select-plan.active {
-  visibility: hidden;
+  display: none;
 }
 
 .setup-guide {
@@ -426,20 +434,8 @@ header {
   outline: 2px solid var(--focused);
 }
 
-.progress-btn button:nth-child(1) {
-  display: none;
-}
-
-.progress-btn button:nth-child(2) {
-  display: flex;
-}
-
-.progress-btn.open button:nth-child(1) {
-  display: flex;
-}
-
-.progress-btn.open button:nth-child(2) {
-  display: none;
+.progress-btn.open button {
+  transform: rotate(180deg);
 }
 
 .selection-container {
@@ -464,7 +460,7 @@ header {
 .content-heading h3 {
   font-weight: normal;
   font-size: 14px;
-  margin-top: -4px;
+  margin-top: -3px;
 }
 
 .content-heading button {
@@ -659,6 +655,9 @@ header {
 
   .select-plan > div .selectBtn {
     margin: 0;
+  }
+  .content-heading h3 {
+    margin-top: 4px;
   }
   .content-body img {
     display: none;

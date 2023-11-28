@@ -1,29 +1,47 @@
-const dcBtn = document.querySelector(".DC");
+const profileMenu = document.querySelector(".DC");
 const sidebar = document.querySelector(".sidebar");
-const notificationIcon = document.querySelector(".notification-icon");
+const notification = document.querySelector(".notification-icon");
 const alertModal = document.querySelector(".alert-modal");
+const notificationStatus = document.getElementById("notification-Status");
+const notificationText = document.getElementById("notification-text");
+const sidebarStatus = document.getElementById("sidebar-Status");
+const firstLink = sidebar.querySelector("ul > a");
 
-dcBtn.addEventListener("click", () => {
+profileMenu.addEventListener("click", (e) => {
   alertModal.classList.remove("active");
   sidebar.classList.toggle("active");
-  escapeFunction(sidebar);
+  escapeFunction(sidebar, profileMenu, sidebarStatus);
+  alertScreenReader(profileMenu, sidebarStatus, "profile Menu");
+  firstLink.focus();
 });
 
-notificationIcon.addEventListener("click", (e) => {
+notification.addEventListener("click", (e) => {
   sidebar.classList.remove("active");
   alertModal.classList.toggle("active");
-
-  e.preventDefault(); // Prevents the default behavior of the notification icon, if any.
-
-  // Add a global keydown event listener to capture the "Escape" key press.
-  escapeFunction(alertModal);
+  escapeFunction(alertModal, notification, notificationStatus);
+  alertScreenReader(notification, notificationStatus, "Notification");
 });
 
-// Add a global keydown event listener to capture the "Escape" key press.
-const escapeFunction = (sidebar) => {
+function alertScreenReader(triggerButton, buttonStatus, text = "button") {
+  const checkAriaValueStatus =
+    triggerButton.attributes["aria-expanded"].value === "true";
+
+  if (checkAriaValueStatus) {
+    buttonStatus.ariaLabel = `${text} closed`;
+    triggerButton.setAttribute("aria-expanded", "false");
+  } else {
+    triggerButton.setAttribute("aria-expanded", "true");
+    buttonStatus.ariaLabel = `${text} opened`;
+  }
+}
+
+const escapeFunction = (elementClass, triggerButton, buttonStatus) => {
   const handleEscape = (e) => {
     if (e.key === "Escape") {
-      sidebar.classList.remove("active");
+      elementClass.classList.remove("active");
+      triggerButton.setAttribute("aria-expanded", "false");
+      buttonStatus.ariaLabel = "Notification closed";
+      triggerButton.focus();
       document.removeEventListener("keydown", handleEscape);
     }
   };
@@ -42,26 +60,27 @@ const handleSidebarNavigation = (event) => {
   }
 };
 
-document.addEventListener("keydown", handleSidebarNavigation);
-const firstLink = sidebar.querySelector("ul a");
-if (firstLink) {
-  firstLink.focus();
-}
+sidebar.addEventListener("keydown", handleSidebarNavigation);
 
-//progress btn toggle
+//Setup Guide toggle btn
 const progressBtn = document.querySelector(".progress-btn");
 const selectionItems = document.querySelector(".selection-container");
+const setupGuideAriaStatus = document.getElementById("setup-guide-text");
+const firstSvgAnimation = document.querySelector(".svg-animation");
 progressBtn.addEventListener("click", () => {
   selectionItems.classList.toggle("open");
   progressBtn.classList.toggle("open");
+  firstSvgAnimation.focus();
+  alertScreenReader(progressBtn, setupGuideAriaStatus, "Setup Guide");
 });
 
 // select plan
 const selectPlan = document.querySelector(".select-plan");
 const selectPlanBtn = document.querySelector(".select-plan-closebtn");
-selectPlanBtn.addEventListener("click", () =>
-  selectPlan.classList.add("active")
-);
+selectPlanBtn.addEventListener("click", () => {
+  selectPlan.classList.add("active");
+  selectPlan.ariaLabel = "select your plan removed";
+});
 
 //single article
 const allheading = document.querySelectorAll(".h3-heading");
@@ -86,7 +105,7 @@ svgAnimation.forEach((svg) => {
 
     gettingDomElement(svgContainer, e);
     const checkboxButtonStatus = gettingDomElement(svgContainer, e);
-    animation(svgContainer, checkboxButtonStatus);
+    animation(svgContainer, checkboxButtonStatus, e);
     progressBar();
   });
 });
@@ -115,11 +134,13 @@ function gettingDomElement(svgContainer, e) {
 }
 
 /*----------------------------------------------------*/
-function animation(svgContainer, checkboxButtonStatus) {
+function animation(svgContainer, checkboxButtonStatus, e) {
   const halfCircle = svgContainer.querySelector(".half-circle");
   const smallCompleted = svgContainer.querySelector(".small-completed");
   const fullCompleted = svgContainer.querySelector(".full-completed");
-  checkboxButtonStatus.ariaLabel = "Loading, please wait..."; //for screen reader to know whether the button is checked
+  const currentSingleArticle =
+    e.currentTarget.parentElement.parentElement.parentElement; //getting the root parent element
+  checkboxButtonStatus.ariaLabel = "Loading..."; //for screen reader to know whether the button is checked
 
   if (!svgContainer.classList.contains("animate")) {
     svgContainer.classList.add("animate");
@@ -153,6 +174,7 @@ function animation(svgContainer, checkboxButtonStatus) {
     }, 500);
   } else {
     svgContainer.classList.remove("animate");
+    currentSingleArticle.classList.add("show");
     halfCircle.style.transform = "rotate(-260deg)";
     smallCompleted.style.display = "none";
     fullCompleted.style.display = "none";
@@ -175,54 +197,22 @@ function progressBar() {
   progressBar.style.width = `${lenght * 20}%`;
 }
 
-const elements = document.querySelectorAll("#navigate");
-
-let currentElementIndex = 0;
-
-const setActiveElement = () => {
-  elements.forEach((element, index) => {
-    element.classList.toggle("active", index === currentElementIndex);
-  });
-};
-
-document.addEventListener("keydown", (event) => {
-  switch (event.key) {
-    case "ArrowUp":
-      currentElementIndex =
-        (currentElementIndex - 1 + elements.length) % elements.length;
-      setActiveElement();
-      break;
-    case "ArrowDown":
-      currentElementIndex = (currentElementIndex + 1) % elements.length;
-      setActiveElement();
-      break;
-  }
-});
-
-// Add click event to handle focus on click
-elements.forEach((element, index) => {
-  element.addEventListener("click", () => {
-    currentElementIndex = index;
-    setActiveElement();
-  });
-});
-
-const handleKeyDownEvent = (event) => {
-  const tabIndex = document.querySelectorAll(".tabIndex");
-
-  const currentIndex = Array.from(tabIndex).indexOf(document.activeElement);
+const setUpGuide = document.querySelector(".setup-guide");
+const handleSetupGuideNavigation = (event) => {
+  const items = setUpGuide.querySelectorAll(".tabIndex");
+  const currentIndex = Array.from(items).indexOf(document.activeElement);
 
   if (
     event.key === "ArrowUp" ||
     (event.key === "ArrowLeft" && currentIndex > 0)
   ) {
-    tabIndex[currentIndex - 1].focus();
+    items[currentIndex - 1].focus();
   } else if (
     event.key === "ArrowDown" ||
-    (event.key === "ArrowRight" && currentIndex < tabIndex.length - 1)
+    (event.key === "ArrowRight" && currentIndex < items.length - 1)
   ) {
-    tabIndex[currentIndex + 1].focus();
+    items[currentIndex + 1].focus();
   }
 };
 
-document.addEventListener("keydown", handleKeyDownEvent);
+setUpGuide.addEventListener("keydown", handleSetupGuideNavigation);

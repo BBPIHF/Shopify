@@ -115,11 +115,14 @@
       </div>
 
       <div class="notification">
+        <span id="notification-Status" aria-live="polite" aria-label=""></span>
         <button
           class="notification-icon tabIndex"
-          aria-label="menu"
+          id="notifiction button"
+          aria-label="notification"
           aria-haspopup="true"
-          aria-expanded="true"
+          aria-expanded="false"
+          aria-controls="alert modal"
         >
           <svg
             width="24"
@@ -128,7 +131,7 @@
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             role="img"
-            aria-label="Notification Icon"
+            aria-hidden="true"
           >
             <path
               fill-rule="evenodd"
@@ -139,7 +142,14 @@
           </svg>
         </button>
 
-        <button id="DC" class="DC tabIndex" aria-label="button-element ">
+        <button
+          id="DC"
+          class="DC tabIndex"
+          aria-label="profile-item"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="sidebar-menu-content"
+        >
           <p class="text">Davii Collections</p>
           <p class="DC-name">DC</p>
         </button>
@@ -148,6 +158,7 @@
 
     <!-- sidebar starts here -->
     <div class="sidebar">
+      <span id="sidebar-Status" aria-live="polite" aria-label=""></span>
       <div class="DC">
         <p>DC</p>
         <p>Davii Collections</p>
@@ -157,6 +168,7 @@
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <circle cx="12" cy="12" r="10" fill=""></circle>
           <path
@@ -172,6 +184,7 @@
           viewBox="0 0 21 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <path
             fill-rule="evenodd"
@@ -184,22 +197,30 @@
       </a>
       <hr class="hr" />
 
-      <ul>
-        <a href="https://admin.shopify.com">Help Center</a>
-        <a href="https://admin.shopify.com">Changelog</a>
-        <a href="https://admin.shopify.com">Community forums</a>
-        <a href="https://admin.shopify.com">Hire a Shopify Partner</a>
-        <a href="https://admin.shopify.com">Keyboard shortcuts</a>
+      <ul id="sidebar-menu-content" aria-labelledby="DC" role="menu">
+        <a href="https://admin.shopify.com" role="menuItem">Help Center</a>
+        <a href="https://admin.shopify.com" role="menuItem">Changelog</a>
+        <a href="https://admin.shopify.com" role="menuItem">Community forums</a>
+        <a href="https://admin.shopify.com" role="menuItem"
+          >Hire a Shopify Partner</a
+        >
+        <a href="https://admin.shopify.com" role="menuItem"
+          >Keyboard shortcuts</a
+        >
         <hr class="hr" />
-        <a class="name" href=""
+        <a class="name" href="" role="menuItem"
           ><b>David Micheal</b><br /><span>davidmicheal@gmail.com</span></a
         >
-        <a href="https://admin.shopify.com">Manage account</a>
-        <a href="https://admin.shopify.com">Log out</a>
+        <a href="https://admin.shopify.com" role="menuItem">Manage account</a>
+        <a href="https://admin.shopify.com" role="menuItem">Log out</a>
       </ul>
     </div>
     <!-- notification alert starts here -->
-    <div class="alert-modal">
+    <div
+      class="alert-modal"
+      id="alert modal"
+      aria-labelledby="notifiction button"
+    >
       <div class="heading">
         <p>Alerts</p>
         <div class="alertIcons">
@@ -244,19 +265,26 @@
         </div>
       </div>
 
-      <p>Alerts about your store and account will show here</p>
+      <p id="notification-text">
+        Alerts about your store and account will show here
+      </p>
     </div>
 
     <main class="main">
       <div class="select-plan">
         <div>
-          <p>Extend your trial for $1/month for 3 months on select plans.</p>
+          <p class="tabIndex">
+            Extend your trial for $1/month for 3 months on select plans.
+          </p>
           <a href="https://shopify.com/pricing" class="selectBtn tabIndex"
             >Select a plan</a
           >
         </div>
 
-        <button class="select-plan-closebtn tabIndex">
+        <button
+          class="select-plan-closebtn tabIndex"
+          aria-label="select your plan remove"
+        >
           <svg
             width="20"
             height="21"
@@ -284,8 +312,17 @@
               </div>
             </div>
           </div>
-          <div class="progress-btn">
-            <button class="toggle-btn tabIndex">
+          <span id="setup-guide-text" aria-live="polite" aria-label=""></span>
+
+          <div
+            class="progress-btn"
+            aria-label="Setup-guide"
+            aria-haspopup="true"
+            aria-expanded="true"
+            aria-controls="Setup-guide-items"
+            id="setup-guide"
+          >
+            <button class="toggle-btn tabIndex" aria-label="Setup-guide">
               <svg
                 width="25"
                 height="26"
@@ -301,28 +338,16 @@
                 />
               </svg>
             </button>
-            <button class="toggle-btn tabIndex">
-              <svg
-                width="25"
-                height="26"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M6.21967 8.46967C6.51256 8.17678 6.98744 8.17678 7.28033 8.46967L10.75 11.9393L14.2197 8.46967C14.5126 8.17678 14.9874 8.17678 15.2803 8.46967C15.5732 8.76256 15.5732 9.23744 15.2803 9.53033L11.2803 13.5303C10.9874 13.8232 10.5126 13.8232 10.2197 13.5303L6.21967 9.53033C5.92678 9.23744 5.92678 8.76256 6.21967 8.46967Z"
-                  fill="#322F33"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
-        <div class="selection-container">
+        <div
+          class="selection-container open"
+          id="Setup-guide-items"
+          aria-labelledby="setup-guide"
+        >
           <!-- single article starts here -->
-          <article class="single-article">
+          <article class="single-article show">
             <div class="content-heading">
               <div>
                 <span id="item-status" aria-live="polite" aria-label=""></span>
